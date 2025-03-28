@@ -45,4 +45,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function doctor_details()
+    {
+        return $this->belongsTo(doctor_details::class, 'doctor_id', 'id');
+    }
 }
