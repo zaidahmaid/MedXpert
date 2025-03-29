@@ -23,49 +23,38 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
-                                <th>Specialization</th>
-                                <th>City</th>
-                                <th>Rate/5</th>
+                                <th>Email</th>
+                                <th>gender</th>
+                                <th>Medical History</th>
                                 <th>Start date</th>
                                 <th>More Info</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
-                                <th>Specialization</th>
-                                <th>City</th>
-                                <th>Rate/5</th>
+                                <th>Email</th>
+                                <th>gender</th>
+                                <th>Medical History</th>
                                 <th>Start date</th>
                                 <th>More Info</th>
                             </tr>
                         </tfoot>
                         <tbody>
+                            @foreach ($patients as $patient)
                             <tr>
-                                <td>Shad Decker</td>
-                                <td>Regional Director</td>
-                                <td>Edinburgh</td>
-                                <td>4</td>
-                                <td>2008/11/13</td>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$patient ->user->name ?? 'N/A'}}</td>
+                                <td>{{$patient ->user->email ?? 'N/A'}}</td>
+                                <td>{{$patient->gender ?? 'N/A'}}</td>
+                                <td>btn</td>
+                                <td>{{$patient->created_at ?? 'N/A'}}</td>
                                 <td>btn</td>
                             </tr>
-                            <tr>
-                                <td>Michael Bruce</td>
-                                <td>Javascript Developer</td>
-                                <td>Singapore</td>
-                                <td>3.5</td>
-                                <td>2011/06/27</td>
-                                <td>btn</td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>4.5</td>
-                                <td>2011/01/25</td>
-                                <td>btn</td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

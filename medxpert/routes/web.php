@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\doctor_details;
 use App\Models\Appointment;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/doctor', function () {
     $doctors = doctor_details::whereHas('user', function ($query) {
@@ -18,6 +19,13 @@ Route::get('/doctor', function () {
 Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
 Route::post('/appointments/book', [AppointmentController::class, 'book'])->name('appointments.book');
 
+
+
+
+
+
+
+
 Route::get('/', function () {
     return view('admindashboard.index');
 });
@@ -26,10 +34,6 @@ route::get('/admindashboard',function(){
     return view ('admindashboard.index');
 })->name('dash');
 
-route::get('/doctors',function(){
-    return view ('admindashboard.doctors.index');
-})->name('doc');
 
-route::get('/patient',function(){
-    return view ('admindashboard.patient.index');
-})->name('pat');
+Route::get('/admindashboard/doctors', [DashboardController::class, 'doctors'])->name('doc');
+Route::get('/admindashboard/patients', [DashboardController::class, 'patients'])->name('pat');

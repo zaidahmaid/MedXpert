@@ -17,12 +17,14 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Data Table of Patients</h6>
+                <button>Add Doctor</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Specialization</th>
                                 <th>City</th>
@@ -33,6 +35,7 @@
                         </thead>
                         <tfoot>
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Specialization</th>
                                 <th>City</th>
@@ -42,30 +45,17 @@
                             </tr>
                         </tfoot>
                         <tbody>
+                            @foreach ($doctors as $doctor)
                             <tr>
-                                <td>Shad Decker</td>
-                                <td>Regional Director</td>
-                                <td>Edinburgh</td>
-                                <td>4</td>
-                                <td>2008/11/13</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $doctor->user->name ?? 'N/A' }}</td>
+                                <td>{{ $doctor->doctorDetails->specialty ?? 'N/A' }}</td>
+                                <td>{{ $doctor->doctorDetails->city ?? 'N/A' }}</td>
+                                <td>{{ $doctor->doctorDetails->rating ?? 'N/A' }}</td>
+                                <td>{{ $doctor->doctorDetails->created_at ?? 'N/A' }}</td>
                                 <td>btn</td>
                             </tr>
-                            <tr>
-                                <td>Michael Bruce</td>
-                                <td>Javascript Developer</td>
-                                <td>Singapore</td>
-                                <td>3.5</td>
-                                <td>2011/06/27</td>
-                                <td>btn</td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>4.5</td>
-                                <td>2011/01/25</td>
-                                <td>btn</td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

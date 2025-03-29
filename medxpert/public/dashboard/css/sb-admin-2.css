@@ -4554,6 +4554,8 @@ input[type="button"].btn-block {
   margin-bottom: 0;
   background-color: #f8f9fc;
   border-bottom: 1px solid #e3e6f0;
+  display: flex;
+  justify-content: space-between;
 }
 
 .card-header:first-child {

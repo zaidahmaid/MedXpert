@@ -56,7 +56,7 @@ return new class extends Migration {
         });
 
         // Patient Medical History Table
-        Schema::create('patient_medical_history', function (Blueprint $table) {
+        Schema::create('patient_medical_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('patients')->onDelete('cascade');
             $table->text('chronic_diseases')->nullable();
