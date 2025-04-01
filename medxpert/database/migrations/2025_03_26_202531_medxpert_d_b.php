@@ -67,22 +67,22 @@ return new class extends Migration {
         });
 
         // Available Slots Table
-        // Schema::create('available_slots', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
-        //     $table->date('date');
-        //     $table->time('start_time');
-        //     $table->time('end_time');
-        //     $table->boolean('is_booked')->default(false);
-        //     $table->timestamps();
-        // });
+        Schema::create('available_slots', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->boolean('is_booked')->default(false);
+            $table->timestamps();
+        });
 
         // Appointments Table
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('patients')->onDelete('cascade');
             $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
-            // $table->foreignId('slot_id')->unique()->constrained('available_slots')->onDelete('cascade');
+            $table->foreignId('slot_id')->unique()->constrained('available_slots')->onDelete('cascade');
             $table->date('appointment_date');
             $table->time('appointment_time');
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed', 'expired'])->default('pending');
