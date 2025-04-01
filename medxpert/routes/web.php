@@ -29,11 +29,19 @@ route::get('/admindashboard', function () {
 })->name('dash');
 
 
-Route::get('/admindashboard/doctors', [DashboardController::class, 'doctors'])->name('doc');
+Route::get('/admindashboard/doctors', [DashboardController::class, 'doctors'])->name('doctors');
 Route::get('/admindashboard/patients', [DashboardController::class, 'patients'])->name('pat');
 
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('patients', DashboardController::class)->except(['create', 'store', 'show', 'destroy']);
+    Route::get('patients/{patient}/edit', [DashboardController::class, 'edit'])->name('patients.edit');
+    Route::put('patients/{patient}', [DashboardController::class, 'update'])->name('patients.update');
+    Route::delete('patients/{patient}', [DashboardController::class, 'destroy'])->name('patients.destroy');
+    
+    // Appointment routes
+    Route::post('appointments', [DashboardController::class, 'storeAppointment'])->name('appointments.store');
+    Route::delete('appointments/{appointment}', [DashboardController::class, 'destroyAppointment'])->name('appointments.destroy');
+    Route::get('appointments/{appointment}/edit', [DashboardController::class, 'editAppointment'])->name('appointments.edit');
+    Route::put('appointments/{appointment}', [DashboardController::class, 'updateAppointment'])->name('appointments.update');
 });
 
 
