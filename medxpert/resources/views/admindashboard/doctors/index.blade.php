@@ -53,7 +53,7 @@
                                 <td>{{ $doctor->doctorDetails->city ?? 'N/A' }}</td>
                                 <td>{{ $doctor->doctorDetails->rating ?? 'N/A' }}</td>
                                 <td>{{ $doctor->doctorDetails->created_at ?? 'N/A' }}</td>
-                                <td>btn</td>
+                                <td><button class="btn btn-success" onclick="window.location.href='{{ route('admin.doctors.edit', $doctor->id) }}'">Edit doctor</button></td>
                             </tr>
                             @endforeach
                         </tbody>

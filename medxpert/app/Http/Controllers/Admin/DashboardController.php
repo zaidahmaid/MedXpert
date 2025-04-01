@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\admin\Doctor;
 use App\Models\admin\Patient;
 use App\Models\admin\Appointment;
+use App\Models\available_slots;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -154,4 +156,187 @@ class DashboardController extends Controller
             return back()->with('error', 'Error deleting appointment: ' . $e->getMessage());
         }
     }
+
+
+    //doc sec
+    /**
+ * Show the form for editing the specified doctor.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Contracts\View\View
+ */
+public function editDoctor($id)
+{
+    $doctor = Doctor::with(['user', 'doctorDetails'])->findOrFail($id);
+    $patients = Patient::with('user')->get();
+    $appointments = Appointment::where('doctor_id', $id)
+        ->with('patient.user')
+        ->orderBy('appointment_date', 'desc')
+        ->get();
+    
+    return view('admindashboard.doctors.editdoctor', compact('doctor', 'patients', 'appointments'));
+}
+
+/**
+ * Update the specified doctor in storage.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @param  int  $id
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function updateDoctor(Request $request, $id)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $request->user_id,
+        'role' => 'required|in:admin,doctor,patient',
+        'specialty' => 'required|string|max:255',
+        'clinic_address' => 'required|string',
+        'city' => 'required|string|max:100',
+        'price' => 'required|numeric|min:0',
+        'phone' => 'required|string|max:10',
+        'experience_years' => 'required|integer|min:0',
+        'rating' => 'required|in:1,2,3,4,5',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $doctor = Doctor::findOrFail($id);
+        
+        $doctor->user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+        ]);
+        
+        // Handle image upload if provided
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->storeAs('public/doctors', $imageName);
+            
+            // Delete old image if exists
+            if ($doctor->doctorDetails && $doctor->doctorDetails->image) {
+                Storage::delete('public/doctors/' . $doctor->doctorDetails->image);
+            }
+        } else {
+            $imageName = $doctor->doctorDetails->image ?? null;
+        }
+        
+        $doctor->doctorDetails()->updateOrCreate(
+            ['doctor_id' => $doctor->id],
+            [
+                'specialty' => $request->specialty,
+                'clinic_address' => $request->clinic_address,
+                'city' => $request->city,
+                'price' => $request->price,
+                'phone' => $request->phone,
+                'experience_years' => $request->experience_years,
+                'rating' => $request->rating,
+                'image' => $imageName,
+            ]
+        );
+        
+        DB::commit();
+        
+        return redirect()->route('doctors')
+            ->with('success', 'Doctor information updated successfully');
+            
+    } catch (\Exception $e) {
+        DB::rollBack();
+        
+        return back()->withInput()->with('error', 'Error updating doctor information: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Remove the specified doctor from storage.
+ *
+ * @param  int  $id
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function destroyDoctor($id)
+{
+    DB::beginTransaction();
+    
+    try {
+        $doctor = Doctor::findOrFail($id);
+        $userId = $doctor->user_id;
+        
+        // Delete doctor image if exists
+        if ($doctor->doctorDetails && $doctor->doctorDetails->image) {
+            Storage::disk('public')->delete('doctors/' . $doctor->doctorDetails->image);
+        }
+        
+        $doctor->delete();
+        
+        User::destroy($userId);
+        
+        DB::commit();
+        
+        return redirect()->route('doc')
+            ->with('success', 'Doctor and all associated records have been deleted');
+            
+    } catch (\Exception $e) {
+        DB::rollBack();
+        
+        return back()->with('error', 'Error deleting doctor: ' . $e->getMessage());
+    }
+}
+public function storeSlot(Request $request)
+{
+    $request->validate([
+        'doctor_id' => 'required|exists:doctors,id',
+        'date' => 'required|date|after_or_equal:today',
+        'start_time' => 'required',
+        'end_time' => 'required|after:start_time',
+        'is_booked' => 'required|boolean'
+    ]);
+    
+    available_slots::create([
+        'doctor_id' => $request->doctor_id,
+        'date' => $request->date,
+        'start_time' => $request->start_time,
+        'end_time' => $request->end_time,
+        'is_booked' => $request->is_booked
+    ]);
+    
+    return redirect()->back()->with('success', 'New slot added successfully!');
+}
+
+public function editSlot(available_slots $slot)
+{
+    return view('admindashboard.slots.edit', compact('slot'));
+}
+
+public function updateSlot(Request $request, available_slots $slot)
+{
+    $request->validate([
+        'date' => 'required|date',
+        'start_time' => 'required',
+        'end_time' => 'required|after:start_time',
+        'is_booked' => 'required|boolean'
+    ]);
+    
+    $slot->update([
+        'date' => $request->date,
+        'start_time' => $request->start_time,
+        'end_time' => $request->end_time,
+        'is_booked' => $request->is_booked
+    ]);
+    
+    return redirect()->route('admin.doctors.edit', $slot->doctor_id)->with('success', 'Slot updated successfully!');
+}
+
+public function destroySlot(available_slots $slot)
+{
+    $doctorId = $slot->doctor_id;
+    $slot->delete();
+    
+    return redirect()->route('admin.doctors.edit', $doctorId)->with('success', 'Slot deleted successfully!');
+}
+
+
+
 }

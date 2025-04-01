@@ -41,7 +41,7 @@ return new class extends Migration {
             $table->decimal('price', 10, 2);
             $table->string('phone', 10);
             $table->integer('experience_years');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('rating', ['1', '2', '3', '4', '5'])->default('4');
             $table->timestamps();
         });

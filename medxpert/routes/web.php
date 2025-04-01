@@ -33,15 +33,27 @@ Route::get('/admindashboard/doctors', [DashboardController::class, 'doctors'])->
 Route::get('/admindashboard/patients', [DashboardController::class, 'patients'])->name('pat');
 
 Route::prefix('admin')->name('admin.')->group(function () {
+    // Patient routes
     Route::get('patients/{patient}/edit', [DashboardController::class, 'edit'])->name('patients.edit');
     Route::put('patients/{patient}', [DashboardController::class, 'update'])->name('patients.update');
     Route::delete('patients/{patient}', [DashboardController::class, 'destroy'])->name('patients.destroy');
+    
+    // Doctor routes
+    Route::get('doctors/{doctor}/edit', [DashboardController::class, 'editDoctor'])->name('doctors.edit');
+    Route::put('doctors/{doctor}', [DashboardController::class, 'updateDoctor'])->name('doctors.update');
+    Route::delete('doctors/{doctor}', [DashboardController::class, 'destroyDoctor'])->name('doctors.destroy');
     
     // Appointment routes
     Route::post('appointments', [DashboardController::class, 'storeAppointment'])->name('appointments.store');
     Route::delete('appointments/{appointment}', [DashboardController::class, 'destroyAppointment'])->name('appointments.destroy');
     Route::get('appointments/{appointment}/edit', [DashboardController::class, 'editAppointment'])->name('appointments.edit');
     Route::put('appointments/{appointment}', [DashboardController::class, 'updateAppointment'])->name('appointments.update');
+
+    // Available slots routes
+    Route::post('slots', [DashboardController::class, 'storeSlot'])->name('slots.store');
+    Route::get('slots/{slot}/edit', [DashboardController::class, 'editSlot'])->name('slots.edit');
+    Route::put('slots/{slot}', [DashboardController::class, 'updateSlot'])->name('slots.update');
+    Route::delete('slots/{slot}', [DashboardController::class, 'destroySlot'])->name('slots.destroy');
 });
 
 
@@ -50,6 +62,3 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/doctor', [AvailableSlot::class, 'doctors',])->name('doc');
 Route::post('/doctor', [AvailableSlot::class, 'book'])->name('doc.book');
 // end zaid's route ====================================================
-
-
-
