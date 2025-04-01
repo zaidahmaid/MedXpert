@@ -10,6 +10,7 @@ class DashboardController extends Controller
 {
     public function doctors()
     {
+        $doctorCount = Doctor::count();
         $doctors = Doctor::with(['user', 'doctorDetails'])->get();
         return view('admindashboard.doctors.index', compact('doctors'));
     }
