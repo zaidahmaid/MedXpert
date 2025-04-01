@@ -50,3 +50,8 @@ route::get('/admindashboard',function(){
 
 Route::get('/admindashboard/doctors', [DashboardController::class, 'doctors'])->name('doc');
 Route::get('/admindashboard/patients', [DashboardController::class, 'patients'])->name('pat');
+// Route::get('/admindashboard/addpatient', [DashboardController::class, 'edit'])->name('adminpatient');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('patients', DashboardController::class)->except(['create', 'store', 'show', 'destroy']);
+});
