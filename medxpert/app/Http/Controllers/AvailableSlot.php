@@ -10,7 +10,7 @@ use App\Models\admin\Doctor;
 use App\Models\admin\Patient;
 use App\Models\available_slots;
 
-class zaid extends Controller
+class AvailableSlot extends Controller
 {
 
     public function doctors(Request $request)
