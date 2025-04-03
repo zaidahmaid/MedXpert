@@ -17,7 +17,6 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Data Table of Patients</h6>
-                <button class="btn-add-user">Add Patient</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
