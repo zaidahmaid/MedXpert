@@ -10,7 +10,8 @@ use App\Http\Controllers\AvailableSlot;
 use App\Models\admin\Doctor;
 use App\Models\admin\Patient;
 use App\Models\admin\DoctorDetails;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -57,8 +58,13 @@ route::get('/admindashboard', function () {
 
 Route::get('/admindashboard/doctors', [DashboardController::class, 'doctors'])->name('doctors');
 Route::get('/admindashboard/patients', [DashboardController::class, 'patients'])->name('pat');
+Route::get('/admindashboard/users', [DashboardController::class, 'allUsers'])->name('users');
 
 Route::prefix('admin')->name('admin.')->group(function () {
+    // User routes
+    Route::get('users/create', [DashboardController::class, 'createUser'])->name('users.create');
+    Route::post('users', [DashboardController::class, 'storeUser'])->name('users.store');
+    
     // Patient routes
     Route::get('patients/{patient}/edit', [DashboardController::class, 'edit'])->name('patients.edit');
     Route::put('patients/{patient}', [DashboardController::class, 'update'])->name('patients.update');
@@ -81,6 +87,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::put('slots/{slot}', [DashboardController::class, 'updateSlot'])->name('slots.update');
     Route::delete('slots/{slot}', [DashboardController::class, 'destroySlot'])->name('slots.destroy');
 });
+
 
 
 
