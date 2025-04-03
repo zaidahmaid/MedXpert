@@ -9,19 +9,6 @@ use App\Models\admin\Doctor;
 use App\Models\admin\Patient;
 use App\Models\admin\DoctorDetails;
 
-Route::get('/doctor', function () {
-    $doctors = doctor_details::whereHas('user', function ($query) {
-        $query->where('role', 'doctor');
-    })->with('user')->get();
-
-    $appointments = Appointment::where('status', 'pending')->get();
-
-    return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments]);
-});
-
-Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
-Route::post('/appointments/book', [AppointmentController::class, 'book'])->name('appointments.book');
-
 Route::get('/about', function () {
     return view('about'); // تأكد أن اسم الملف هو about.blade.php
 });
