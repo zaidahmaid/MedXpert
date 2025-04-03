@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\admin\Doctor;
+use App\Models\admin\DoctorDetails;
 use App\Models\admin\Patient;
 use App\Models\admin\Appointment;
 use App\Models\available_slots;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+
 
 class DashboardController extends Controller
 {
@@ -25,6 +28,95 @@ class DashboardController extends Controller
         $patients = Patient::with(['user', 'medicalHistory'])->get();
         return view('admindashboard.patients.index', compact('patients'));
     }
+
+
+
+    /**
+ * Display a listing of all users.
+ *
+ * @return \Illuminate\Contracts\View\View
+ */
+public function allUsers()
+{
+    $users = \App\Models\User::orderBy('created_at', 'desc')->get();
+    return view('admindashboard.users.allusers', compact('users'));
+}
+
+/**
+ * Show form to create a new user
+ *
+ * @return \Illuminate\Contracts\View\View
+ */
+public function createUser()
+{
+    return view('admindashboard.users.create');
+}
+
+/**
+ * Store a newly created user
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return \Illuminate\Http\RedirectResponse
+ */
+public function storeUser(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:8|confirmed',
+        'role' => 'required|in:admin,doctor,patient',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+        ]);
+
+        // If user is a patient, create a patient record
+        if ($request->role == 'patient') {
+            Patient::create([
+                'user_id' => $user->id,
+                'gender' => $request->gender ?? 'not specified',
+                'age' => $request->age ?? 0,
+            ]);
+        }
+
+        // If user is a doctor, create a doctor record
+        if ($request->role == 'doctor') {
+            $doctor = Doctor::create([
+                'user_id' => $user->id,
+            ]);
+
+            // Create doctor details if needed
+            DoctorDetails::create([
+                'doctor_id' => $doctor->id,
+                'specialty' => $request->specialty ?? 'General',
+                'clinic_address' => $request->clinic_address ?? '',
+                'city' => $request->city ?? 'Amman',
+                'phone' => $request->phone ?? '',
+                'experience_years' => $request->experience_years ?? 0,
+                'rating' => $request->rating ?? 3,
+                'price' => $request->price ?? 0,
+            ]);
+        }
+
+        DB::commit();
+
+        return redirect()->route('users')
+            ->with('success', 'User created successfully');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->withInput()
+            ->with('error', 'Error creating user: ' . $e->getMessage());
+    }
+}
+
 
    
     public function edit($id)
@@ -131,10 +223,10 @@ class DashboardController extends Controller
     
         try {
             Appointment::create([
-                'user_id' => $request->patient_id,  // تأكد أن لديك عمود user_id في جدول appointments
+                'user_id' => $request->patient_id,  
                 'doctor_id' => $request->doctor_id,
-                'appointment_date' => $request->date,  // تأكد أن الاسم في الفورم هو "date"
-                'appointment_time' => $request->time,  // تأكد أن الاسم في الفورم هو "time"
+                'appointment_date' => $request->date,  
+                'appointment_time' => $request->time,  
                 'status' => $request->status,
                 'notes' => $request->notes,
             ]);
@@ -169,12 +261,11 @@ public function editDoctor($id)
 {
     $doctor = Doctor::with(['user', 'doctorDetails'])->findOrFail($id);
     $patients = Patient::with('user')->get();
-    $appointments = Appointment::where('doctor_id', $id)
-        ->with('patient.user')
-        ->orderBy('appointment_date', 'desc')
+    $avaslot = available_slots::where('doctor_id', $id)
+        ->orderBy('date', 'desc')
         ->get();
     
-    return view('admindashboard.doctors.editdoctor', compact('doctor', 'patients', 'appointments'));
+    return view('admindashboard.doctors.editdoctor', compact('doctor', 'patients', 'avaslot'));
 }
 
 /**

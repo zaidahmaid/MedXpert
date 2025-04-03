@@ -63,7 +63,7 @@
                                 <div class="form-group">
                                     <label for="phone">Phone Number</label>
                                     <input type="text" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" 
-                                           value="{{ old('phone', $doctor->doctorDetail->phone ?? '') }}" maxlength="10" required>
+                                           value="{{ old('phone', $doctor->doctorDetails->phone ?? '') }}" maxlength="10" required>
                                     @error('phone')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -73,7 +73,7 @@
                                 <div class="form-group">
                                     <label for="experience_years">Experience (Years)</label>
                                     <input type="number" name="experience_years" id="experience_years" class="form-control @error('experience_years') is-invalid @enderror" 
-                                           value="{{ old('experience_years', $doctor->doctorDetail->experience_years ?? '') }}" required min="0">
+                                           value="{{ old('experience_years', $doctor->doctorDetails->experience_years ?? '') }}" required min="0">
                                     @error('experience_years')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -87,7 +87,7 @@
                                 <div class="form-group">
                                     <label for="specialty">Specialty</label>
                                     <input type="text" name="specialty" id="specialty" class="form-control @error('specialty') is-invalid @enderror" 
-                                           value="{{ old('specialty', $doctor->doctorDetail->specialty ?? '') }}" required>
+                                           value="{{ old('specialty', $doctor->doctorDetails->specialty ?? '') }} " placeholder="{{ old('specialty', $doctor->doctorDetails->specialty ?? '') }}" required>
                                     @error('specialty')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -96,7 +96,7 @@
                                 <div class="form-group">
                                     <label for="clinic_address">Clinic Address</label>
                                     <textarea name="clinic_address" id="clinic_address" rows="3" 
-                                              class="form-control @error('clinic_address') is-invalid @enderror" required>{{ old('clinic_address', $doctor->doctorDetail->clinic_address ?? '') }}</textarea>
+                                              class="form-control @error('clinic_address') is-invalid @enderror" required>{{ old('clinic_address', $doctor->doctorDetails->clinic_address ?? '') }}</textarea>
                                     @error('clinic_address')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -105,7 +105,7 @@
                                 <div class="form-group">
                                     <label for="city">City</label>
                                     <input type="text" name="city" id="city" class="form-control @error('city') is-invalid @enderror" 
-                                           value="{{ old('city', $doctor->doctorDetail->city ?? '') }}" required>
+                                           value="{{ old('city', $doctor->doctorDetails->city ?? '') }}" required>
                                     @error('city')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -119,7 +119,7 @@
                                         </div>
                                         <input type="number" name="price" id="price" step="0.01" min="0" 
                                                class="form-control @error('price') is-invalid @enderror" 
-                                               value="{{ old('price', $doctor->doctorDetail->price ?? '') }}" required>
+                                               value="{{ old('price', $doctor->doctorDetails->price ?? '') }}" required>
                                     </div>
                                     @error('price')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -129,11 +129,11 @@
                                 <div class="form-group">
                                     <label for="rating">Rating</label>
                                     <select name="rating" id="rating" class="form-control @error('rating') is-invalid @enderror" required>
-                                        <option value="1" {{ old('rating', $doctor->doctorDetail->rating ?? '') == '1' ? 'selected' : '' }}>1 Star</option>
-                                        <option value="2" {{ old('rating', $doctor->doctorDetail->rating ?? '') == '2' ? 'selected' : '' }}>2 Stars</option>
-                                        <option value="3" {{ old('rating', $doctor->doctorDetail->rating ?? '') == '3' ? 'selected' : '' }}>3 Stars</option>
-                                        <option value="4" {{ old('rating', $doctor->doctorDetail->rating ?? '') == '4' ? 'selected' : '' }}>4 Stars</option>
-                                        <option value="5" {{ old('rating', $doctor->doctorDetail->rating ?? '') == '5' ? 'selected' : '' }}>5 Stars</option>
+                                        <option value="1" {{ old('rating', $doctor->doctorDetails->rating ?? '') == '1' ? 'selected' : '' }}>1 Star</option>
+                                        <option value="2" {{ old('rating', $doctor->doctorDetails->rating ?? '') == '2' ? 'selected' : '' }}>2 Stars</option>
+                                        <option value="3" {{ old('rating', $doctor->doctorDetails->rating ?? '') == '3' ? 'selected' : '' }}>3 Stars</option>
+                                        <option value="4" {{ old('rating', $doctor->doctorDetails->rating ?? '') == '4' ? 'selected' : '' }}>4 Stars</option>
+                                        <option value="5" {{ old('rating', $doctor->doctorDetails->rating ?? '') == '5' ? 'selected' : '' }}>5 Stars</option>
                                     </select>
                                     @error('rating')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -146,9 +146,9 @@
                                         <input type="file" name="image" id="image" class="custom-file-input @error('image') is-invalid @enderror">
                                         <label class="custom-file-label" for="image">Choose file...</label>
                                     </div>
-                                    @if(isset($doctor->doctorDetail->image) && $doctor->doctorDetail->image)
+                                    @if(isset($doctor->doctorDetails->image) && $doctor->doctorDetails->image)
                                         <div class="mt-2">
-                                            <img src="{{ asset('storage/doctors/' . $doctor->doctorDetail->image) }}" class="img-thumbnail" width="150" alt="Doctor Image">
+                                            <img src="{{ asset('storage/doctors/' . $doctor->doctorDetails->image) }}" class="img-thumbnail" width="150" alt="Doctor Image">
                                         </div>
                                     @endif
                                     @error('image')
@@ -176,8 +176,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if(isset($availableSlots) && count($availableSlots) > 0)
-                                                @foreach($availableSlots as $slot)
+                                            @if(isset($avaslot) && count($avaslot) > 0)
+                                                @foreach($avaslot as $slot)
                                                 <tr>
                                                     <td>{{ $slot->date }}</td>
                                                     <td>{{ $slot->start_time }}</td>

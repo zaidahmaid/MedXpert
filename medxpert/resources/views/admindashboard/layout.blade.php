@@ -69,7 +69,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User role:</h6>
-                        <a class="collapse-item" href="#">All Users</a>
+                        <a class="collapse-item" href="{{route('users')}}">All Users</a>
                         <a class="collapse-item" href="{{route('doctors')}}">Doctor</a>
                         <a class="collapse-item" href="{{route( 'pat')}}">Patient</a>
                     </div>
