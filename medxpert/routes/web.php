@@ -21,13 +21,16 @@ Route::get('/contact', function () {
     return view('contact'); // تأكد أن اسم الملف هو contact.blade.php
 });
 Route::post('/contact-submit', function () {
-    // قم بمعالجة البيانات المُرسلة
-    $data = request()->all();
+    DB::table('forms')->insert([
+        'name' => request('name'), 
+        'email' => request('email'), 
+        'message' => request('message'), 
+        'created_at' => now(), 
+        'updated_at' => now(), 
+    ]);
 
-    // عرض رسالة تأكيد
-    return back()->with('success', 'Your message has been sent successfully!');
+    return back()->with('success', 'Your message has been submitted successfully!');
 });
-
 
 
 
