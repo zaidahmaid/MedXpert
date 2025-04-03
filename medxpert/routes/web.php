@@ -22,9 +22,19 @@ Route::get('/doctor', function () {
 Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
 Route::post('/appointments/book', [AppointmentController::class, 'book'])->name('appointments.book');
 
+Route::get('/about', function () {
+    return view('about'); // تأكد أن اسم الملف هو about.blade.php
+});
+Route::get('/contact', function () {
+    return view('contact'); // تأكد أن اسم الملف هو contact.blade.php
+});
+Route::post('/contact-submit', function () {
+    // قم بمعالجة البيانات المُرسلة
+    $data = request()->all();
 
-
-
+    // عرض رسالة تأكيد
+    return back()->with('success', 'Your message has been sent successfully!');
+});
 
 
 
