@@ -24,4 +24,8 @@ class doctor_details extends Model
     {
         return $this->belongsTo(User::class, 'doctor_id', 'id', 'name');
     }
+    public function doctors()
+    {
+        return $this->hasOne(doctors::class, 'user_id', 'id');
+    }
 }

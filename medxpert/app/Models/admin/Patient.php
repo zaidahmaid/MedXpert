@@ -23,11 +23,11 @@ class Patient extends Model
 
     public function medicalHistory()
     {
-        return $this->hasOne(PatientMedicalHistory::class, 'user_id', 'user_id');
+        return $this->hasOne(PatientMedicalHistory::class, 'patient_id');
     }
 
     public function appointments()
     {
-        return $this->hasMany(Appointment::class, 'user_id');
+        return $this->hasMany(Appointment::class, 'patient_id');
     }
 }
