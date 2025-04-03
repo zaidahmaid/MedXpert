@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(doctor_details::class, 'doctor_id', 'id');
     }
+    public function doctors()
+    {
+        return $this->belongsTo(doctors::class, 'user_id', 'id');
+    }
 }

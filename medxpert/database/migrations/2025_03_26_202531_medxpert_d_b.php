@@ -41,7 +41,7 @@ return new class extends Migration {
             $table->decimal('price', 10, 2);
             $table->string('phone', 10);
             $table->integer('experience_years');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('rating', ['1', '2', '3', '4', '5'])->default('4');
             $table->timestamps();
         });
@@ -58,13 +58,14 @@ return new class extends Migration {
         // Patient Medical History Table
         Schema::create('patient_medical_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('patients')->onDelete('cascade');
+            $table->foreignId('patient_id')->unique()->constrained('patients')->onDelete('cascade');
             $table->text('chronic_diseases')->nullable();
             $table->text('medications')->nullable();
             $table->text('allergies')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
         });
+        
 
         // Available Slots Table
         Schema::create('available_slots', function (Blueprint $table) {
