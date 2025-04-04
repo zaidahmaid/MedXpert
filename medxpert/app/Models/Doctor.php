@@ -1,37 +1,37 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DoctorDetail extends Model
+class Doctor extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'doctor_id',
+        'user_id',
         'specialty',
-        'clinic_address',
         'city',
-        'price',
-        'phone',
-        'experience_years',
-        'image',
-        'rating',
+        'consultation_fee',
+        'about',
+        'education',
+        'experience'
+        // Add any other fields you need
     ];
 
     /**
-     * Get the doctor that owns these details.
+     * Get the user that owns the doctor profile.
      */
-    public function doctor()
+    public function user()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(User::class);
     }
-    // In Doctor model
+
+
 public function doctorDetail()
 {
     return $this->hasOne(DoctorDetail::class);
 }
-
 }

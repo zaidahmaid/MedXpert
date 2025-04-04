@@ -11,6 +11,7 @@ class Doctor extends Model
 
     protected $fillable = [
         'user_id',
+        // other doctor fields
     ];
 
     /**
@@ -22,26 +23,10 @@ class Doctor extends Model
     }
 
     /**
-     * Get the doctor's details.
+     * Get the doctor details associated with the doctor.
      */
     public function doctorDetail()
     {
         return $this->hasOne(DoctorDetail::class);
-    }
-
-    /**
-     * Get the doctor's available slots.
-     */
-    public function availableSlots()
-    {
-        return $this->hasMany(AvailableSlot::class);
-    }
-
-    /**
-     * Get the doctor's appointments.
-     */
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class);
     }
 }
