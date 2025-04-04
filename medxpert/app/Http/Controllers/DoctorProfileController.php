@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
+use App\Models\admin\Doctor;
 use App\Models\AvailableSlot;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class DoctorProfileController extends Controller
     public function show($id)
     {
         // Find doctor with relationships
-        $doctor = Doctor::with(['user', 'doctorDetail'])
+        $doctor = Doctor::with(['user', 'doctorDetails'])
             ->findOrFail($id);
         
         // Get available slots for the next 7 days that are not booked
@@ -47,33 +47,33 @@ class DoctorProfileController extends Controller
 
     // Search by specialty (if provided)
     if ($request->has('specialty') && $request->specialty) {
-        $query->whereHas('doctorDetail', function($q) use ($request) {
+        $query->whereHas('doctorDetails', function($q) use ($request) {
             $q->where('specialty', $request->specialty);
         });
     }
 
     // Search by city (if provided)
     if ($request->has('city') && $request->city) {
-        $query->whereHas('doctorDetail', function($q) use ($request) {
+        $query->whereHas('doctorDetails', function($q) use ($request) {
             $q->where('city', $request->city);
         });
     }
 
     // Filter by price range (if provided)
     if ($request->has('min_price') && $request->min_price) {
-        $query->whereHas('doctorDetail', function($q) use ($request) {
+        $query->whereHas('doctorDetails', function($q) use ($request) {
             $q->where('price', '>=', $request->min_price);
         });
     }
 
     if ($request->has('max_price') && $request->max_price) {
-        $query->whereHas('doctorDetail', function($q) use ($request) {
+        $query->whereHas('doctorDetails', function($q) use ($request) {
             $q->where('price', '<=', $request->max_price);
         });
     }
 
     // Eager load the doctor details with the doctor data
-    $doctors = $query->with('doctorDetail')->get();
+    $doctors = $query->with('doctorDetails')->get();
 
     // Return the view with results
     return view('doctors.search_results', compact('doctors'));

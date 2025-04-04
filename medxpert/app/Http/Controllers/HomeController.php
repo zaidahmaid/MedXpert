@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Doctor;
-use App\Models\DoctorDetail;
+use App\Models\admin\Doctor;
+use App\Models\admin\DoctorDetails;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller

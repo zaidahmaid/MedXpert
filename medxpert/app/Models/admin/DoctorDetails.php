@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DoctorDetail extends Model
+class DoctorDetails extends Model
 {
     use HasFactory;
 
@@ -29,9 +29,9 @@ class DoctorDetail extends Model
         return $this->belongsTo(Doctor::class);
     }
     // In Doctor model
-public function doctorDetail()
+public function doctorDetails()
 {
-    return $this->hasOne(DoctorDetail::class);
+    return $this->hasOne(DoctorDetails::class);
 }
 
 }

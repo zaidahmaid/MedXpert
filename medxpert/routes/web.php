@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Models\doctor_details;
 use App\models\AvailableSlot;
 use App\Models\Appointment;
-use App\Http\Controllers\AppointmentController;
-use App\Models\doctors;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DoctorProfileController;
@@ -22,38 +20,6 @@ Route::get('/doctor', function () {
 
     return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments]);
 });
-
-Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
-Route::post('/appointments/book', [AppointmentController::class, 'book'])->name('appointments.book');
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('home');
-
-// Route::get('/doctors', function () {
-//     // To be implemented
-//     return view('doctors.index');
-// })->name('doctors.index');
-
-// Route::get('/clinics', function () {
-//     // To be implemented
-//     return view('clinics.index');
-// })->name('clinics.index');
-
-// Add more routes as needed
-
-
-
-
-
-
-
-
-
-
-// Route::get('/', function () {
-//     return view('admindashboard.index');
-// });
-
 
 route::get('/admindashboard', function () {
     $doctorCount = Doctor::count();
@@ -107,9 +73,7 @@ Route::get('/clinics', function () {
     return view('clinics.index');
 })->name('clinics.index');
 
-// Add more routes as needed
-Route::get('/specialties', [SpecialtyController::class, 'index'])->name('specialties.index');
-Route::get('/clinics/{clinic}', [ClinicController::class, 'show'])->name('clinics.show');
+
 
 
 // Add this route definition
@@ -128,11 +92,7 @@ Route::get('doctor/{id}', [DoctorProfileController::class, 'show'])->name('docto
 Route::get('/doctors/{id}', [DoctorProfileController::class, 'show'])
     ->name('profile');
 
-// Appointment Booking Routes (These routes would be implemented in an AppointmentController)
-Route::get('/appointments/create/{doctor}', [AppointmentController::class, 'create'])
-    ->name('appointments.create');
-Route::get('/appointments/book/{slot}', [AppointmentController::class, 'bookSlot'])
-    ->name('appointments.book');
+
 // zaid's route ========================================================
 Route::get('/doctor', [AvailableSlot::class, 'doctors',])->name('doc');
 Route::post('/doctor', [AvailableSlot::class, 'book'])->name('doc.book');

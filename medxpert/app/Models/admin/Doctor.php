@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\admin;
+
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\AvailableSlot;
 
 class Doctor extends Model
 {
@@ -24,9 +26,9 @@ class Doctor extends Model
     /**
      * Get the doctor's details.
      */
-    public function doctorDetail()
+    public function doctorDetails()
     {
-        return $this->hasOne(DoctorDetail::class);
+        return $this->hasOne(DoctorDetails::class);
     }
 
     /**
