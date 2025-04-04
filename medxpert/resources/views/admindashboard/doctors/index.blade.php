@@ -17,7 +17,6 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Data Table of Doctors</h6>
-                <button class="btn-add-user">Add Doctor</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -53,7 +52,7 @@
                                 <td>{{ $doctor->doctorDetails->city ?? 'N/A' }}</td>
                                 <td>{{ $doctor->doctorDetails->rating ?? 'N/A' }}</td>
                                 <td>{{ $doctor->doctorDetails->created_at ?? 'N/A' }}</td>
-                                <td>btn</td>
+                                <td><button class="btn btn-success" onclick="window.location.href='{{ route('admin.doctors.edit', $doctor->id) }}'">Edit doctor</button></td>
                             </tr>
                             @endforeach
                         </tbody>

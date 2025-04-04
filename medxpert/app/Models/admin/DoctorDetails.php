@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Models\Admin;
-
+namespace App\Models\admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -19,13 +18,20 @@ class DoctorDetails extends Model
         'phone',
         'experience_years',
         'image',
-        'rating'
+        'rating',
     ];
 
-  
+    /**
+     * Get the doctor that owns these details.
+     */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class, 'doctor_id');
+        return $this->belongsTo(Doctor::class);
     }
+    // In Doctor model
+public function doctorDetails()
+{
+    return $this->hasOne(DoctorDetails::class);
 }
 
+}
