@@ -18,20 +18,14 @@ class DoctorDetail extends Model
         'phone',
         'experience_years',
         'image',
-        'rating',
+        'rating'
     ];
 
     /**
-     * Get the doctor that owns these details.
+     * Get the doctor that owns the details.
      */
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
     }
-    // In Doctor model
-public function doctorDetail()
-{
-    return $this->hasOne(DoctorDetail::class);
-}
-
 }
