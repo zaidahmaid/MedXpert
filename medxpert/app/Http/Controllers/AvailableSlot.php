@@ -40,10 +40,12 @@ class AvailableSlot extends Controller
                 $q->where('city', $request->city);
             });
         }
-
-        $doctors = $query->get();
+        $doctors = $query->paginate(10);
         $appointments = available_slots::where('is_booked', 0)->get();
 
+        // if ($request->ajax()) {
+        //     return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments])->render();
+        // }
 
         return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments]);
     }
@@ -63,7 +65,7 @@ class AvailableSlot extends Controller
         }
 
         // Test Patient ID (Replace this with actual user authentication)
-        $testPatientId = 1;
+        $testPatientId = auth()->id;
 
         // Move slot details to the Appointment table
         Appointment::create([

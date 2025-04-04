@@ -5,10 +5,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
     <title>Doctor Appointment</title>
+
 </head>
 
+
+
 <body style="background-color: aliceblue;">
+    <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
+
+        @if (Route::has('login'))
+        <nav class="-mx-3 flex flex-1 justify-end">
+            @auth
+
+            <a
+                href="{{ url('/dashboard') }}"
+                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                Dashboard
+            </a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <x-dropdown-link :href="route('logout')"
+                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                    {{ __('Log Out') }}
+                </x-dropdown-link>
+            </form>
+            @else
+            <a
+                href="{{ route('login') }}"
+                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                Log in
+            </a>
+
+            @if (Route::has('register'))
+            <a
+                href="{{ route('register') }}"
+                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                Register
+            </a>
+            @endif
+            @endauth
+        </nav>
+        @endif
+    </header>
     <form method="GET" action="{{ route('doc') }}" class="container_fluid w-auto pt-3 flex-nowrap d-flex justify-content-around">
         <div class="row bg-light p-3 rounded shadow-sm">
             <!-- Specialty -->
@@ -62,13 +104,13 @@
 
 
     @foreach ($doctors as $doctor)
-    <div class="container mt-3 border-4 border-primary p-4">
-        <div class="card">
+    <div class="container mt-3 border-4 border-primary p-4 ">
+        <div class=" card">
             <div class="card-body">
-                <div class="row badge-dark hight">
+                <div class="row badge-dark hight ">
                     <!-- Doctor Profile Section -->
-                    <div class="col-md-3 text-center ">
-                        <img src="{{$doctor->doctorDetails['image']}}" class="rounded-circle mb-3  m-auto fit-image img-thumbnail"
+                    <div class=" col-md-3 text-center ">
+                        <img src=" {{$doctor->doctorDetails['image']}}" class="rounded-circle mb-3  m-auto fit-image img-thumbnail"
                             style="height: 170px; width:170px" alt="Doctor Image" />
                         <h5 class="card-title">{{$doctor->user['name']}}</h5>
 
@@ -77,6 +119,7 @@
                     </div>
 
                     <!-- Doctor Details Section -->
+
                     <div class="col-md-4">
                         <ul class="list-unstyled mt-4">
                             <li class="mb-2"><i class="fas fa-stethoscope text-primary me-2"></i>Doctor specialty: {{ $doctor->doctorDetails['specialty'] }}</li>
@@ -196,11 +239,37 @@
         </div>
     </div>
     @endforeach
-
+    <div id="doctors-list"></div>
+    <div class="text-center mt-4">
+        <button id="load-more" class="btn btn-primary mb-5 w-25" data-next-page="{{ $doctors->nextPageUrl() }}">
+            Load More
+        </button>
+    </div>
     <!-- Bootstrap and Font Awesome JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#load-more').on('click', function() {
+                let nextPage = $(this).data('next-page');
+                if (!nextPage) return;
 
+
+                $.get(nextPage, function(data) {
+                    // let doctorsHtml = $(data).html(); // Extract only doctor cards
+                    $('#doctors-list').append(data);
+
+                    let newNextPage = $(data).find('#load-more').data('next-page');
+                    if (newNextPage) {
+                        $('#load-more').data('next-page', newNextPage);
+                    } else {
+                        $('#load-more').remove(); // Remove button when no more pages
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // For each doctor, initialize their appointment days
