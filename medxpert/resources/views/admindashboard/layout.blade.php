@@ -21,6 +21,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('dashboard/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -68,7 +69,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">User role:</h6>
-                        <a class="collapse-item" href="{{route('doc')}}">Doctor</a>
+                        <a class="collapse-item" href="{{route('users')}}">All Users</a>
+                        <a class="collapse-item" href="{{route('doctors')}}">Doctor</a>
                         <a class="collapse-item" href="{{route( 'pat')}}">Patient</a>
                     </div>
                 </div>

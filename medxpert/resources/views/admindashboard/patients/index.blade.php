@@ -27,7 +27,6 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>gender</th>
-                                <th>Medical History</th>
                                 <th>Start date</th>
                                 <th>More Info</th>
                             </tr>
@@ -38,7 +37,6 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>gender</th>
-                                <th>Medical History</th>
                                 <th>Start date</th>
                                 <th>More Info</th>
                             </tr>
@@ -50,9 +48,8 @@
                                 <td>{{$patient ->user->name ?? 'N/A'}}</td>
                                 <td>{{$patient ->user->email ?? 'N/A'}}</td>
                                 <td>{{$patient->gender ?? 'N/A'}}</td>
-                                <td>btn</td>
                                 <td>{{$patient->created_at ?? 'N/A'}}</td>
-                                <td>btn</td>
+                                <td><button class="btn btn-success" onclick="window.location.href='{{ route('admin.patients.edit', $patient->id) }}'">Edit Patient</button></td>
                             </tr>
                             @endforeach
                         </tbody>
