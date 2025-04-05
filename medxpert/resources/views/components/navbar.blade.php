@@ -20,15 +20,15 @@
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="{{route('home')}}" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Find Doctors</a>
+                <a href="{{route('doc')}}" class="text-gray-700 hover:text-blue-600 font-medium">Find Doctors</a>
                 <a href="{{route('about')}}" class="text-gray-700 hover:text-blue-600 font-medium">About Us</a>
                 <a href="{{route('contact')}}" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
             </div>
             
             <!-- Login/Register Buttons -->
             <div class="hidden md:flex items-center space-x-4">
-                <a href="#" class="px-4 py-2 text-primary font-medium hover:text-primary-dark transition-colors duration-200">Login</a>
-                <a href="#" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors duration-200 font-medium shadow-md">Register</a>
+                <a href="{{route('login')}}" class="px-4 py-2 text-primary font-medium hover:text-primary-dark transition-colors duration-200">Login</a>
+                <a href="{{route('register')}}" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors duration-200 font-medium shadow-md">Register</a>
             </div>
         </div>
         

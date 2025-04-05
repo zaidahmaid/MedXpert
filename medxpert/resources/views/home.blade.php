@@ -11,7 +11,7 @@
             <p class="text-xl md:text-2xl mb-10 max-w-3xl mx-auto">The easiest way to connect with the best healthcare providers in Jordan</p>
             
             <!-- Search Form with Working Filters -->
-            <form action="{{ route('doctors.search') }}" method="GET" class="search-box p-6 md:p-8 max-w-5xl mx-auto transform transition-all duration-300 hover:shadow-xl">
+            <form action="{{ route('doctors.search') }}" method="GET" class="search-box p-6 md:p-8 max-w-5xl mx-auto transform transition-all duration-300 hover:shadow-xl" style="color: #000000;">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-7 gap-4">
                     <div class="md:col-span-2">
