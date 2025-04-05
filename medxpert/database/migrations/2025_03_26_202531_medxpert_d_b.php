@@ -93,10 +93,11 @@ return new class extends Migration {
 
         // form table
         Schema::create('forms', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->string('name');
             $table->string('email');
-            $table->text('message')->nullable(); 
+            $table->text('message')->nullable();
+            $table->boolean('replied')->default(false);
             $table->timestamps();
         });
         
@@ -115,5 +116,6 @@ return new class extends Migration {
         Schema::dropIfExists('doctors');
         Schema::dropIfExists('admins');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('forms');
     }
 };

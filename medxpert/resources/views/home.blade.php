@@ -1,47 +1,6 @@
-<!-- Navbar Component (resources/views/components/navbar.blade.php) -->
-<!-- Save this as a separate file -->
-<nav class="bg-white shadow-md py-4">
-    <div class="container mx-auto px-4">
-        <div class="flex justify-between items-center">
-            <!-- Logo -->
-            <a href="/" class="flex items-center">
-                <span class="text-2xl font-bold text-blue-600">med<span class="text-gray-800">Xpert</span></span>
-            </a>
-            
-            <!-- Mobile menu button -->
-            <div class="md:hidden">
-                <button type="button" class="text-gray-500 hover:text-blue-600 focus:outline-none">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-            
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Find Doctors</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Clinics</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Specialties</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">About Us</a>
-                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
-            </div>
-            
-            <!-- Login/Register Buttons -->
-            <div class="hidden md:flex items-center space-x-4">
-                <a href="#" class="px-4 py-2 text-blue-600 font-medium hover:text-blue-800">Login</a>
-                <a href="#" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">Register</a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<!-- Footer Component (resources/views/components/footer.blade.php) -->
-<!-- Save this as a separate file -->
-
-
-<!-- Main HomePage Content -->
 @extends('layouts.app')
 
-@section('title', 'medXpert - Find and Book Medical Appointments in Jordan')
+@section('title', 'medXpert - Home')
 
 @section('content')
     <!-- Hero Section - Enhanced with consistent blue colors -->

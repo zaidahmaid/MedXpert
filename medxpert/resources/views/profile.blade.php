@@ -10,7 +10,7 @@
                         <!-- Doctor Image -->
                         <div class="md:w-1/3 mb-6 md:mb-0">
                             <div class="bg-gray-100 p-6 rounded-lg shadow">
-                                <img src="{{ asset('storage/' . $doctor->doctorDetail->image) }}" alt="{{ $doctor->user->name }}" class="w-full rounded-lg object-cover">
+                                <img src="{{ asset('storage/' . $doctor->doctorDetails->image) }}" alt="{{ $doctor->user->name }}" class="w-full rounded-lg object-cover">
                                 
                                 <div class="mt-4">
                                     <!-- Rating Stars -->
@@ -18,7 +18,7 @@
                                         <span class="text-gray-600 mr-2">Rating:</span>
                                         <div class="flex">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                @if ($i <= $doctor->doctorDetail->rating)
+                                                @if ($i <= $doctor->doctorDetails->rating)
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
                                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                     </svg>
@@ -33,14 +33,11 @@
                                     
                                     <!-- Consultation Price -->
                                     <div class="mt-4 p-3 bg-blue-50 rounded-lg">
-                                        <span class="text-xl font-semibold text-blue-600">${{ $doctor->doctorDetail->price }}</span>
+                                        <span class="text-xl font-semibold text-blue-600">${{ $doctor->doctorDetails->price }}</span>
                                         <span class="text-gray-600 text-sm"> per consultation</span>
                                     </div>
                                     
-                                    <!-- Book Appointment Button -->
-                                    <a href="{{ route('appointments.create', ['doctor' => $doctor->id]) }}" class="mt-4 block w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-center transition duration-300">
-                                        Book Appointment
-                                    </a>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -48,7 +45,7 @@
                         <!-- Doctor Details -->
                         <div class="md:w-2/3 md:pl-8">
                             <h1 class="text-3xl font-bold text-gray-800">Dr. {{ $doctor->user->name }}</h1>
-                            <h2 class="text-xl text-blue-600 mt-1">{{ $doctor->doctorDetail->specialty }}</h2>
+                            <h2 class="text-xl text-blue-600 mt-1">{{ $doctor->doctorDetails->specialty }}</h2>
                             
                             <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- Experience -->
@@ -61,7 +58,7 @@
                                         <span class="text-gray-600">Experience</span>
                                     </div>
                                     <div class="mt-2 text-lg font-medium">
-                                        {{ $doctor->doctorDetail->experience_years }} years
+                                        {{ $doctor->doctorDetails->experience_years }} years
                                     </div>
                                 </div>
                                 
@@ -75,7 +72,7 @@
                                         <span class="text-gray-600">City</span>
                                     </div>
                                     <div class="mt-2 text-lg font-medium">
-                                        {{ $doctor->doctorDetail->city }}
+                                        {{ $doctor->doctorDetails->city }}
                                     </div>
                                 </div>
                                 
@@ -88,7 +85,7 @@
                                         <span class="text-gray-600">Phone</span>
                                     </div>
                                     <div class="mt-2 text-lg font-medium">
-                                        {{ $doctor->doctorDetail->phone }}
+                                        {{ $doctor->doctorDetails->phone }}
                                     </div>
                                 </div>
                                 
@@ -116,13 +113,13 @@
                                     <span class="text-gray-600">Clinic Address</span>
                                 </div>
                                 <div class="mt-2 text-lg">
-                                    {{ $doctor->doctorDetail->clinic_address }}
+                                    {{ $doctor->doctorDetails->clinic_address }}
                                 </div>
                             </div>
                             
                             <!-- Available Slots Section -->
                             <div class="mt-8">
-                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Available Appointments</h3>
+                                <h3 class="text-xl font-semibold text-gray-800 mb-4">Available Slots</h3>
                                 <div class="overflow-x-auto">
                                     @if($availableSlots->count() > 0)
                                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -130,9 +127,7 @@
                                                 <div class="border rounded-lg p-3 bg-gray-50">
                                                     <div class="font-medium">{{ \Carbon\Carbon::parse($slot->date)->format('D, M d, Y') }}</div>
                                                     <div class="text-gray-600">{{ \Carbon\Carbon::parse($slot->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($slot->end_time)->format('h:i A') }}</div>
-                                                    <a href="{{ route('appointments.book', ['slot' => $slot->id]) }}" class="mt-2 block w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-1 px-2 rounded text-center transition duration-300">
-                                                        Book Now
-                                                    </a>
+                                                
                                                 </div>
                                             @endforeach
                                         </div>
