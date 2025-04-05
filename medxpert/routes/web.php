@@ -10,6 +10,33 @@ use App\Http\Controllers\DoctorProfileController;
 use App\Models\admin\Doctor;
 use App\Models\admin\Patient;
 use App\Models\admin\DoctorDetails;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
+
+
+Route::get('/about', function () {
+    return view('about'); // تأكد أن اسم الملف هو about.blade.php
+});
+Route::get('/contact', function () {
+    return view('contact'); // تأكد أن اسم الملف هو contact.blade.php
+});
+Route::post('/contact-submit', function () {
+    DB::table('forms')->insert([
+        'name' => request('name'), 
+        'email' => request('email'), 
+        'message' => request('message'), 
+        'created_at' => now(), 
+        'updated_at' => now(), 
+    ]);
+
+    return back()->with('success', 'Your message has been submitted successfully!');
+});
+
+
+
+
+
 
 Route::get('/doctor', function () {
     $doctors = doctor_details::whereHas('user', function ($query) {
