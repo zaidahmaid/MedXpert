@@ -2,11 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\doctor_details;
-use App\models\AvailableSlot;
 use App\Models\Appointment;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DoctorProfileController;
+use App\Http\Controllers\AvailableSlot;
 use App\Models\admin\Doctor;
 use App\Models\admin\Patient;
 use App\Models\admin\DoctorDetails;
