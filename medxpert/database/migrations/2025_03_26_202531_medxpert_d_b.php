@@ -90,7 +90,20 @@ return new class extends Migration {
             $table->text('notes')->nullable();
             $table->timestamps();
         });
+
+        // form table
+        Schema::create('forms', function (Blueprint $table) {
+            $table->id(); 
+            $table->string('name');
+            $table->string('email');
+            $table->text('message')->nullable(); 
+            $table->timestamps();
+        });
+        
+
+
     }
+
 
     public function down()
     {
