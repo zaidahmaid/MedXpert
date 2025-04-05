@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Storage;
 
 Route::get('/about', function () {
     return view('about'); // تأكد أن اسم الملف هو about.blade.php
-});
+})->name('about');
 Route::get('/contact', function () {
     return view('contact'); // تأكد أن اسم الملف هو contact.blade.php
-});
+})->name('contact');
 Route::post('/contact-submit', function () {
     DB::table('forms')->insert([
         'name' => request('name'), 
@@ -63,6 +63,10 @@ route::get('/admindashboard', function () {
 Route::get('/admindashboard/doctors', [DashboardController::class, 'doctors'])->name('doctors');
 Route::get('/admindashboard/patients', [DashboardController::class, 'patients'])->name('pat');
 Route::get('/admindashboard/users', [DashboardController::class, 'allUsers'])->name('users');
+
+Route::get('/admindashboard/messages', [DashboardController::class, 'messages'])->name('admin.messages');
+Route::post('/admindashboard/messages/{message}/reply', [DashboardController::class, 'replyMessage'])->name('admin.messages.reply');
+Route::get('/admin/unreplied-messages', [DashboardController::class, 'getUnrepliedMessages']);
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // User routes

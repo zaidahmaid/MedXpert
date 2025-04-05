@@ -12,6 +12,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Form;
+use App\Mail\MessageReply;
+use Illuminate\Support\Facades\Mail;
 
 
 class DashboardController extends Controller
@@ -430,4 +433,46 @@ public function destroySlot(available_slots $slot)
 
 
 
+public function messages()
+{
+    // Get all messages with pagination
+    $messages = Form::latest()->paginate(10);
+    
+    return view('admindashboard.mass', compact('messages'));
+}
+
+/**
+ * Reply to a message
+ */
+public function replyMessage(Request $request, $id)
+{
+    $message = Form::findOrFail($id);
+    
+    // Validate request
+    $validated = $request->validate([
+        'reply' => 'required|string',
+    ]);
+    
+    // Send email
+    Mail::to($message->email)->send(new MessageReply($message, $validated['reply']));
+    
+    // Mark message as replied in database
+    $message->update(['replied' => true]);
+    
+    return redirect()->route('admin.messages')->with('success', 'Reply sent successfully');
+}
+public function getUnrepliedMessages()
+{
+    $unrepliedMessages = Form::where('replied', false)
+                            ->latest()
+                            ->take(6)
+                            ->get();
+
+    $unrepliedCount = Form::where('replied', false)->count();
+
+    return response()->json([
+        'messages' => $unrepliedMessages,
+        'count' => $unrepliedCount,
+    ]);
+}
 }

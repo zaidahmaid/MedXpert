@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Midxpert</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+@extends('layouts.app')
+
+@section('title', 'About Us')
+
+@push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/about.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-</head>
-<body>
-    <!-- الجزء الرئيسي للصفحة -->
+@endpush
+
+@section('content')
+
     <div class="container my-5">
         <h1 class="text-center animate__animated animate__fadeInDown">About Us</h1>
         <p class="text-center text-muted">Welcome to Midxpert, your trusted healthcare solution.</p>
@@ -74,5 +74,4 @@
             </div>
         </div>
     </div>
-</body>
-</html>
+@endsection
