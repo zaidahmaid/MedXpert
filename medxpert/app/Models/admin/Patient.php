@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Models\Admin;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\admin\User;
@@ -14,6 +16,10 @@ class Patient extends Model
         'user_id',
         'age',
         'gender',
+
+    ];
+    protected $casts = [
+        'age' => 'integer',
     ];
 
     public function user()

@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\doctor_details;
 // use App\models\AvailableSlot;
+use App\Http\Controllers\AvailableSlot;
 use App\Models\Appointment;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\AvailableSlot;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DoctorProfileController;
 use App\Models\admin\Doctor;
@@ -16,14 +15,22 @@ use App\Models\admin\DoctorDetails;
 Route::get('/doctor', function () {
     $doctors = doctor_details::whereHas('user', function ($query) {
         $query->where('role', 'doctor');
-    })->with('user')->get();});
+    })->with('user')->get();
 
-Route::get('/', function () {
-    return view('admindashboard.index', [DashboardController::class, 'doctors']);
+    $appointments = Appointment::where('status', 'pending')->get();
+
+    return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments]);
 });
 
 route::get('/admindashboard', function () {
-    return view('admindashboard.index');
+    $doctorCount = Doctor::count();
+    $patientCount = Patient::count();
+
+    $doctorAmman = DoctorDetails::where('city', 'Amman')->count();
+    $doctorZarqa = DoctorDetails::where('city', 'Zarqa')->count();
+    $doctorIrbid = DoctorDetails::where('city', 'Irbid')->count();
+
+    return view('admindashboard.index', compact('doctorCount', 'patientCount', 'doctorAmman', 'doctorZarqa', 'doctorIrbid'));
 })->name('dash');
 
 
@@ -35,17 +42,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // User routes
     Route::get('users/create', [DashboardController::class, 'createUser'])->name('users.create');
     Route::post('users', [DashboardController::class, 'storeUser'])->name('users.store');
-    
+
     // Patient routes
     Route::get('patients/{patient}/edit', [DashboardController::class, 'edit'])->name('patients.edit');
     Route::put('patients/{patient}', [DashboardController::class, 'update'])->name('patients.update');
     Route::delete('patients/{patient}', [DashboardController::class, 'destroy'])->name('patients.destroy');
-    
+
     // Doctor routes
     Route::get('doctors/{doctor}/edit', [DashboardController::class, 'editDoctor'])->name('doctors.edit');
     Route::put('doctors/{doctor}', [DashboardController::class, 'updateDoctor'])->name('doctors.update');
     Route::delete('doctors/{doctor}', [DashboardController::class, 'destroyDoctor'])->name('doctors.destroy');
-    
+
     // Appointment routes
     Route::post('appointments', [DashboardController::class, 'storeAppointment'])->name('appointments.store');
     Route::delete('appointments/{appointment}', [DashboardController::class, 'destroyAppointment'])->name('appointments.destroy');
@@ -87,22 +94,40 @@ Route::get('/doctors/{id}', [DoctorProfileController::class, 'show'])
     ->name('profile');
 
 
-
+// zaid's route ========================================================
 Route::get('/doctor', [AvailableSlot::class, 'doctors',])->name('doc');
 Route::post('/doctor', [AvailableSlot::class, 'book'])->name('doc.book');
+// end zaid's route ====================================================
 
-Route::get('/auth', function () {
-    return view('welcome');
+
+
+
+// try to make logn in rejester + patient profile  =============================================================
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+
+Route::get('/patientprofile', function () {
+    return view('profile.index');
+})->name('patientprofile');
+
+// Authentication routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Profile routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/patientprofile', [ProfileController::class, 'show'])->name('patientprofile');
+    Route::post('/patientprofile', [ProfileController::class, 'update'])->name('patientprofile.update');
+    Route::get('/change-password', [ProfileController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/change-password', [ProfileController::class, 'changePassword'])->name('password.update');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Redirect to profile after login
+Route::get('/profile', function () {
+    return redirect()->route('patientprofile');
+})->middleware('auth');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__ . '/auth.php';
+// end try to make lognin rejester + patient profile ==========================================
