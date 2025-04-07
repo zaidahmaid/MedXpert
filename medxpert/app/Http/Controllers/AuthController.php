@@ -25,7 +25,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('patientprofile')->intended('/profile');
+            return redirect()->route('home')->with('success', 'Login successful!');
+
         }
 
         return back()->withErrors([
@@ -49,7 +50,7 @@ class AuthController extends Controller
         ]);
 
         // First check if any automatic creation is happening
-        $countBefore = Patient::count();
+        // $countBefore = Patient::count();
 
         $user = User::create([
             'name' => $request->name,
@@ -58,22 +59,21 @@ class AuthController extends Controller
             'role' => 'patient',
         ]);
 
-        $countAfter = Patient::count();
+        // $countAfter = Patient::count();
 
-        // If a patient was automatically created
-        if ($countAfter > $countBefore) {
-            // Find and update the patient instead of creating a new one
-            $patient = Patient::where('user_id', $user->id)->first();
+        
+        // if ($countAfter > $countBefore) {
+        //     $patient = Patient::where('user_id', $user->id)->first();
 
-            if ($patient) {
-                $patient->age = (int)$request->age;
-                $patient->gender = $request->gender;
-                $patient->save();
+        //     if ($patient) {
+        //         $patient->age = (int)$request->age;
+        //         $patient->gender = $request->gender;
+        //         $patient->save();
 
-                Auth::login($user);
-                return redirect('/')->with('success', 'Registration successful!');
-            }
-        }
+        //         Auth::login($user);
+        //         return redirect('/')->with('success', 'Registration successful!');
+        //     }
+        // }
 
         // If no automatic creation happened, create patient normally
         try {
