@@ -190,7 +190,7 @@
                                                     <td>
                                                         <a href="{{ route('admin.slots.edit', $slot->id) }}" class="btn btn-info btn-sm">Edit</a>
                                                         <button type="button" class="btn btn-danger btn-sm" 
-                                                                onclick="deleteSlot({{ $slot->id }})">Delete</button>
+                                                                onclick="deleteSlot('{{ $slot->id }}')">Delete</button>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -279,7 +279,7 @@
         Swal.fire({
             icon: 'success',
             title: 'Success!',
-            text: '{{ session('success') }}',
+            text: '{{ session("success") }}',
             showConfirmButton: false,
             timer: 3000
         });

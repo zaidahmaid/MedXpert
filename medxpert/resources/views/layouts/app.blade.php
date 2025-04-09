@@ -149,7 +149,7 @@
 
 
     @include('components.navbar')
-    
+
 
     <!-- Main Content -->
     <main>

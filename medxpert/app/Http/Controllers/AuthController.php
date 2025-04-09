@@ -23,10 +23,10 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('home')->with('success', 'Login successful!');
-
+            return redirect('/')->with('success', 'Login successful');
         }
 
         return back()->withErrors([

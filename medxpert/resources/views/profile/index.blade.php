@@ -66,37 +66,6 @@
         </ul>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
-
-
-    <!-- <div class="mb-3 row">
-        <label for="birth_date" class="col-md-3 col-form-label text-md-end">Birth Date</label>
-        <div class="col-md-9">
-            <input type="text" class="form-control @error('birth_date') is-invalid @enderror" id="birth_date" name="birth_date" value="{{ old('birth_date', $patient && $patient->age ? date('j F Y', strtotime('-' . $patient->age . ' years')) : '') }}">
-            @error('birth_date')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
-        </div>
-    </div>
-
-    <div class="mb-3 row">
-        <label for="area" class="col-md-3 col-form-label text-md-end">Area</label>
-        <div class="col-md-9">
-            <div class="input-group">
-                <span class="input-group-text">
-                    <i class="fas fa-map-marker-alt"></i>
-                </span>
-                <input type="text" class="form-control @error('area') is-invalid @enderror" id="area" name="area" value="{{ old('area') }}" aria-label="Area" aria-describedby="area-addon">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                @error('area')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-        </div>
-    </div> -->
     @endif
     <div class="row ">
         <div class="col-md-4">
