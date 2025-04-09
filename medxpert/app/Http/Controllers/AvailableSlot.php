@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\admin\Doctor;
 use App\Models\admin\Patient;
 use App\Models\available_slots;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AvailableSlot extends Controller
 {
@@ -19,9 +21,10 @@ class AvailableSlot extends Controller
 
         if ($request->filled('name')) {
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->name . '%');
+                $q->where('name', $request->name);
             });
         }
+
 
         if ($request->filled('specialty')) {
             $query->whereHas('doctorDetails', function ($q) use ($request) {
@@ -43,9 +46,10 @@ class AvailableSlot extends Controller
 
         $doctors = $query->get();
         $appointments = available_slots::where('is_booked', 0)->get();
+        $specialties = DB::table('doctor_details')->select('specialty')->distinct()->get()->pluck('specialty');
+        $cities = DB::table('doctor_details')->select('city')->distinct()->get()->pluck('city');
 
-
-        return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments]);
+        return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments, 'specialties' => $specialties, 'cities' => $cities]);
     }
 
     public function book(Request $request)
@@ -63,7 +67,8 @@ class AvailableSlot extends Controller
         }
 
         // Test Patient ID (Replace this with actual user authentication)
-        $testPatientId = 1;
+        $user = Auth::user();
+        $testPatientId = $user->id;
 
         // Move slot details to the Appointment table
         Appointment::create([

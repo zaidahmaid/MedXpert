@@ -23,9 +23,10 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('patientprofile')->intended('/profile');
+            return redirect('/')->with('success', 'Login successful');
         }
 
         return back()->withErrors([

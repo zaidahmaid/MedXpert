@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\doctor_details;
 
 // use App\models\AvailableSlot;
-use App\Http\Controllers\AvailableSlot;
+// use App\Http\Controllers\AvailableSlot;
 
 use App\Models\Appointment;
 use App\Http\Controllers\Admin\DashboardController;
@@ -27,11 +27,11 @@ Route::get('/contact', function () {
 })->name('contact');
 Route::post('/contact-submit', function () {
     DB::table('forms')->insert([
-        'name' => request('name'), 
-        'email' => request('email'), 
-        'message' => request('message'), 
-        'created_at' => now(), 
-        'updated_at' => now(), 
+        'name' => request('name'),
+        'email' => request('email'),
+        'message' => request('message'),
+        'created_at' => now(),
+        'updated_at' => now(),
     ]);
 
     return back()->with('success', 'Your message has been submitted successfully!');
@@ -112,7 +112,7 @@ Route::get('/clinics', function () {
 
 
 // Add this route definition
-Route::get('/doctors/search', [DoctorProfileController::class, 'search'])->name('doctors.search');
+// Route::get('/doctors/search', [DoctorProfileController::class, 'search'])->name('doctors.search');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
@@ -129,7 +129,7 @@ Route::get('/doctors/{id}', [DoctorProfileController::class, 'show'])
 
 
 // zaid's route ========================================================
-Route::get('/doctor', [AvailableSlot::class, 'doctors',])->name('doc');
+Route::get('/doctor', [DoctorProfileController::class, 'search'])->name('doc');
 Route::post('/doctor', [AvailableSlot::class, 'book'])->name('doc.book');
 // end zaid's route ====================================================
 
@@ -160,8 +160,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Redirect to profile after login
-Route::get('/profile', function () {
-    return redirect()->route('patientprofile');
-})->middleware('auth');
+// Route::get('/patientprofile', function () {
+//     return redirect()->route('patientprofile');
+// })->middleware('auth');
 
 // end try to make lognin rejester + patient profile ==========================================
