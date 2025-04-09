@@ -59,10 +59,10 @@ return new class extends Migration {
         Schema::create('patient_medical_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('patient_id')->unique()->constrained('patients')->onDelete('cascade');
-            $table->text('chronic_diseases')->nullable();
-            $table->text('medications')->nullable();
-            $table->text('allergies')->nullable();
-            $table->text('notes')->nullable();
+            $table->string('chronic_diseases')->nullable()->default('None');
+            $table->string('medications')->nullable()->default('None');
+            $table->string('allergies')->nullable()->default('None');
+            $table->string('notes')->nullable()->default('No additional notes');
             $table->timestamps();
         });
         
