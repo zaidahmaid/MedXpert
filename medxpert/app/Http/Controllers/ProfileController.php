@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin\Appointment;
+use App\Models\admin\Appointment;
 use App\Models\admin\Doctor;
 use App\Models\admin\DoctorDetails;
 use Illuminate\Http\Request;
