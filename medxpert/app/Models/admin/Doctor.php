@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Models\Admin;
+namespace App\Models\admin;
 
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\AvailableSlot;
+use App\Models\admin\DoctorDetails;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Doctor extends Model
 {

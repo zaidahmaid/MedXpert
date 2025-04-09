@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\admin\Doctor;
 use Illuminate\Http\Request;
-use App\Models\Admin\Doctor;
-use App\Models\admin\DoctorDetails;
-use Illuminate\Support\Facades\DB;
 use App\Models\available_slots;
+use Illuminate\Support\Facades\DB;
+use App\Models\admin\DoctorDetails;
+use Illuminate\Support\Facades\Session;
+
+
 
 class HomeController extends Controller
 {
+    
     /**
      * Show the application dashboard.
      *

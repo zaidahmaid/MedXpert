@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Models\Admin\User;
 use App\Models\Admin\Patient;
@@ -26,6 +26,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            Session::put('user_id', Auth::user()->id);
             return redirect('/')->with('success', 'Login successful');
         }
 
@@ -87,6 +88,8 @@ class AuthController extends Controller
             );
 
             Auth::login($user);
+            $request->session()->regenerate();
+            Session::put('user_id', Auth::user()->id);
             return redirect('/')->with('success', 'Registration successful!');
         } catch (\Exception $e) {
             // If patient creation fails, delete the user we created
@@ -104,6 +107,7 @@ class AuthController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        Session::forget('user_id');
 
         return redirect('/');
     }

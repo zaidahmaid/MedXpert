@@ -3,6 +3,8 @@
 @section('title', 'medXpert - Home')
 
 @section('content')
+
+{{-- {{dd(session()->all())}} --}}
 <!-- Hero Section - Enhanced with consistent blue colors -->
 <section class="hero-section flex items-center justify-center relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-blue-700 to-blue-500 opacity-90"></div>
