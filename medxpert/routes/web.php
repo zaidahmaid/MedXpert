@@ -16,6 +16,9 @@ use App\Models\admin\Patient;
 use App\Models\admin\DoctorDetails;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Form;
+use App\Mail\MessageReply;
+use Illuminate\Support\Facades\Mail;
 
 
 
@@ -42,15 +45,15 @@ Route::post('/contact-submit', function () {
 
 
 
-Route::get('/doctor', function () {
-    $doctors = doctor_details::whereHas('user', function ($query) {
-        $query->where('role', 'doctor');
-    })->with('user')->get();
+// Route::get('/doctor', function () {
+//     $doctors = doctor_details::whereHas('user', function ($query) {
+//         $query->where('role', 'doctor');
+//     })->with('user')->get();
 
-    $appointments = Appointment::where('status', 'pending')->get();
+//     $appointments = Appointment::where('status', 'pending')->get();
 
-    return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments]);
-});
+//     return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments]);
+// });
 
 route::get('/admindashboard', function () {
     $doctorCount = Doctor::count();
@@ -60,7 +63,9 @@ route::get('/admindashboard', function () {
     $doctorZarqa = DoctorDetails::where('city', 'Zarqa')->count();
     $doctorIrbid = DoctorDetails::where('city', 'Irbid')->count();
 
-    return view('admindashboard.index', compact('doctorCount', 'patientCount', 'doctorAmman', 'doctorZarqa', 'doctorIrbid'));
+    $messageCount = Form::where('replied', false)->count();
+
+    return view('admindashboard.index', compact('doctorCount', 'patientCount', 'doctorAmman', 'doctorZarqa', 'doctorIrbid', 'messageCount'));
 })->name('dash');
 
 

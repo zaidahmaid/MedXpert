@@ -369,7 +369,7 @@ public function destroyDoctor($id)
         
         DB::commit();
         
-        return redirect()->route('doc')
+        return redirect()->route('doctors')
             ->with('success', 'Doctor and all associated records have been deleted');
             
     } catch (\Exception $e) {
