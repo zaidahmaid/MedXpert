@@ -19,10 +19,10 @@
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Doctor Name</label>
                     <div class="relative">
-                        <select name="doctor_id" class="w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition">
-                            <option value="">All Doctors</option>
+                        <select name="doctor_id" class="text-gray-700 w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition">
+                            <option class="text-gray-700" value="">All Doctors</option>
                             @foreach($doctors as $doctor)
-                            <option value="{{ $doctor->id }}">Dr. {{ $doctor->user->name }}</option>
+                            <option class="text-gray-700" value="{{ $doctor->id }}">Dr. {{ $doctor->user->name }}</option>
                             @endforeach
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -33,10 +33,10 @@
                 <div class="md:col-span-1">
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Select Specialty</label>
                     <div class="relative">
-                        <select name="specialty" class="w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition">
-                            <option value="">All Specialties</option>
+                        <select name="specialty" class="text-gray-700 w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition">
+                            <option class="text-gray-700" value="">All Specialties</option>
                             @foreach($specialties as $specialty)
-                            <option value="{{ $specialty }}">{{ $specialty }}</option>
+                            <option class="text-gray-700" value="{{ $specialty }}">{{ $specialty }}</option>
                             @endforeach
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -47,10 +47,10 @@
                 <div class="md:col-span-1">
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Location</label>
                     <div class="relative">
-                        <select name="city" class="w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition">
-                            <option value="">All Areas</option>
+                        <select name="city" class="text-gray-700 w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none transition ">
+                            <option class="text-gray-700" value="">All Areas</option>
                             @foreach($cities as $city)
-                            <option value="{{ $city }}">{{ $city }}</option>
+                            <option class="text-gray-700" value="{{ $city }}">{{ $city }}</option>
                             @endforeach
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -61,8 +61,8 @@
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-sm font-semibold mb-2">Price Range</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="number" name="min_price" placeholder="Min Price" class="w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
-                        <input type="number" name="max_price" placeholder="Max Price" class="w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input type="number"  name="min_price" placeholder="Min Price" class="text-gray-700 placeholder-gray-700 w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        <input type="number" name="max_price" placeholder="Max Price" class="text-gray-700 placeholder-gray-700 w-full p-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                     </div>
                 </div>
                 <div class="md:col-span-1">
@@ -103,7 +103,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
             <!-- Specialty Card 1 -->
             <form action="{{ route('doc') }}" method="GET" class="category-card bg-white p-6 rounded-xl shadow-md text-center cursor-pointer hover:shadow-lg transition duration-300">
-                <input type="hidden" name="specialty" value="doctor">
+                <input type="hidden" name="specialty" value="Dentistry">
                 <button type="submit" class="w-full text-left focus:outline-none d-flex flex-column  text-center">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-4">
                         <i class="fas fa-tooth text-2xl"></i>
@@ -115,7 +115,7 @@
 
             <!-- Specialty Card 2 -->
             <form action="{{ route('doc') }}" method="GET" class="category-card bg-white p-6 rounded-xl shadow-md text-center cursor-pointer hover:shadow-lg transition duration-300">
-                <input type="hidden" name="specialty" value="hart">
+                <input type="hidden" name="specialty" value="Cardiology">
                 <button type="submit" class="w-full text-left focus:outline-none d-flex flex-column  text-center">
                     <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-4">
                         <i class="fas fa-heartbeat text-2xl"></i>
@@ -175,7 +175,7 @@
         </div>
 
         <div class="text-center mt-12">
-            <a href="#" class="inline-block px-8 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-600 hover:text-white transition duration-300">
+            <a href="{{route("doc")}}" class="inline-block px-8 py-3 border-2 border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-600 hover:text-white transition duration-300">
                 <span>View All Specialties</span>
                 <i class="fas fa-arrow-right ml-2"></i>
             </a>
@@ -184,7 +184,7 @@
 </section>
 
 <!-- Why Choose Us Section - Consistent styling -->
-<section class="py-20 bg-white">
+<section class="p-20 bg-white">
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>

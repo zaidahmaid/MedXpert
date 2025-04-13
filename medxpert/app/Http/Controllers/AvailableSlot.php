@@ -68,7 +68,7 @@ class AvailableSlot extends Controller
 
         // Test Patient ID (Replace this with actual user authentication)
         $user = Auth::user();
-        $testPatientId = $user->id;
+        $testPatientId = $user->patient->id;
 
         // Move slot details to the Appointment table
         Appointment::create([

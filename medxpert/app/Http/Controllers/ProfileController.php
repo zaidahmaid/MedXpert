@@ -18,8 +18,10 @@ class ProfileController extends Controller
 {
     public function show()
     {
+        // dd("hello");
         $user = Auth::user();
         $patient = $user->patient;
+        // dd($patient);
         $appointments = Appointment::where('user_id', $patient->id)
             ->with(['doctor.user'])
             ->get();

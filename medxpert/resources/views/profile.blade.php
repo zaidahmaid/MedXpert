@@ -112,12 +112,12 @@
                                 <span class="text-gray-600">Clinic Address</span>
                             </div>
                             <div class="mt-2 text-lg">
-                                {{ $doctor->doctorDetails->clinic_address }}
+                                {{ $doctor->doctorDetails->clinic_address}}
                             </div>
                         </div>
-
+                        @if(Auth::user()->role == 'doctor' && Auth::user()->id == $doctor->user_id)
                         <!-- Available Slots Section -->
-                        <div class="bg-white rounded-lg shadow-md mb-6">
+                        <div class="mt-3 bg-white rounded-lg shadow-md mb-6">
                             <div class="px-6 py-4 border-b border-gray-200">
                                 <h3 class="text-lg font-medium text-blue-600">Available Slots</h3>
                             </div>
@@ -138,8 +138,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-gray-200">
-                                                @if(isset($avaslot) && count($avaslot) > 0)
-                                                @foreach($avaslot as $slot)
+                                               
+                                                @if(isset($availableSlots) && count($availableSlots) > 0)
+                                                @foreach($availableSlots as $slot)
                                                 <tr class="hover:bg-gray-50">
                                                     <td class="py-3 px-4 text-sm text-gray-700">{{ $slot->date }}</td>
                                                     <td class="py-3 px-4 text-sm text-gray-700">{{ $slot->start_time }}</td>
@@ -182,6 +183,7 @@
                                         </svg>
                                         Add New Slot
                                     </button>
+                                   
                                 </form>
                             </div>
                         </div>
@@ -190,7 +192,7 @@
                         <div id="modal-backdrop" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity hidden"></div>
 
                         <!-- Add Slot Modal -->
-                        <div id="addSlotModal" class="fixed inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <div id="addSlotModal" class=" fixed inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                                 <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -287,6 +289,7 @@
                             @csrf
                             @method('DELETE')
                         </form>
+                        @endif
                         <!-- <div class="mt-8">
                             <h3 class="text-xl font-semibold text-gray-800 mb-4">Available Slots</h3>
                             <div class="overflow-x-auto">
@@ -314,8 +317,9 @@
 </div>
 @endsection
 <script>
-    // Modal functionality
-    const modalBackdrop = document.getElementById('modal-backdrop');
+   // Modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal elements
     const addSlotModal = document.getElementById('addSlotModal');
     const deleteConfirmModal = document.getElementById('deleteConfirmModal');
     const openSlotModalBtn = document.getElementById('openSlotModalBtn');
@@ -324,65 +328,87 @@
     const addSlotForm = document.getElementById('addSlotForm');
     const deleteSlotForm = document.getElementById('deleteSlotForm');
     const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-
-    // Open Add Slot Modal
-    openSlotModalBtn.addEventListener('click', () => {
-        modalBackdrop.classList.remove('hidden');
-        addSlotModal.classList.remove('hidden');
-    });
-
-    // Close Add Slot Modal
-    closeModalBtn.addEventListener('click', () => {
-        modalBackdrop.classList.add('hidden');
-        addSlotModal.classList.add('hidden');
-    });
-
-    // Submit Add Slot Form
-    submitSlotBtn.addEventListener('click', () => {
-        if (addSlotForm.checkValidity()) {
-            addSlotForm.submit();
-        } else {
-            addSlotForm.reportValidity();
-        }
-    });
-
-    // Close Delete Confirm Modal
-    cancelDeleteBtn.addEventListener('click', () => {
-        modalBackdrop.classList.add('hidden');
-        deleteConfirmModal.classList.add('hidden');
-    });
-
-    // Handle slot deletion
-    function confirmDeleteSlot(slotId) {
-        deleteSlotForm.action = `/admin/slots/${slotId}`;
-        modalBackdrop.classList.remove('hidden');
-        deleteConfirmModal.classList.remove('hidden');
+    
+    // Check if elements exist before adding event listeners
+    if (openSlotModalBtn) {
+        // Open Add Slot Modal
+        openSlotModalBtn.addEventListener('click', () => {
+            addSlotModal.classList.remove('hidden');
+        });
     }
-
-    // Close modals when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target === modalBackdrop) {
-            modalBackdrop.classList.add('hidden');
+    
+    if (closeModalBtn) {
+        // Close Add Slot Modal
+        closeModalBtn.addEventListener('click', () => {
             addSlotModal.classList.add('hidden');
+        });
+    }
+    
+    if (submitSlotBtn && addSlotForm) {
+        // Submit Add Slot Form
+        submitSlotBtn.addEventListener('click', () => {
+            if (addSlotForm.checkValidity()) {
+                addSlotForm.submit();
+            } else {
+                addSlotForm.reportValidity();
+            }
+        });
+    }
+    
+    if (cancelDeleteBtn) {
+        // Close Delete Confirm Modal
+        cancelDeleteBtn.addEventListener('click', () => {
             deleteConfirmModal.classList.add('hidden');
-        }
-    });
-
+        });
+    }
+    
     // Form validation for time slots
     const startTimeInput = document.getElementById('start_time');
     const endTimeInput = document.getElementById('end_time');
+    
+    if (endTimeInput) {
+        endTimeInput.addEventListener('change', () => {
+            if (startTimeInput.value && endTimeInput.value && startTimeInput.value >= endTimeInput.value) {
+                alert('End time must be later than start time');
+                endTimeInput.value = '';
+            }
+        });
+    }
+    
+    if (startTimeInput) {
+        startTimeInput.addEventListener('change', () => {
+            if (startTimeInput.value && endTimeInput.value && startTimeInput.value >= endTimeInput.value) {
+                alert('Start time must be earlier than end time');
+                startTimeInput.value = '';
+            }
+        });
+    }
+});
 
-    endTimeInput.addEventListener('change', () => {
-        if (startTimeInput.value && endTimeInput.value && startTimeInput.value >= endTimeInput.value) {
-            alert('End time must be later than start time');
-            endTimeInput.value = '';
-        }
-    });
+// Handle slot deletion - defined outside to be globally accessible
+function confirmDeleteSlot(slotId) {
+    const deleteSlotForm = document.getElementById('deleteSlotForm');
+    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    
+    if (deleteSlotForm && deleteConfirmModal) {
+        deleteSlotForm.action = `/admin/slots/${slotId}`;
+        deleteConfirmModal.classList.remove('hidden');
+    }
+}
 
-    startTimeInput.addEventListener('change', () => {
-        if (startTimeInput.value && endTimeInput.value && startTimeInput.value >= endTimeInput.value) {
-            alert('Start time must be earlier than end time');
-            startTimeInput.value = '';
-        }
-    });
+// Close modals when clicking outside
+document.addEventListener('click', (e) => {
+    const addSlotModal = document.getElementById('addSlotModal');
+    const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+    
+    // Check if click is outside the modal content
+    if (addSlotModal && !addSlotModal.querySelector('.sm\\:max-w-lg').contains(e.target) && 
+        !e.target.closest('#openSlotModalBtn')) {
+        addSlotModal.classList.add('hidden');
+    }
+    
+    if (deleteConfirmModal && !deleteConfirmModal.querySelector('.sm\\:max-w-lg').contains(e.target)) {
+        deleteConfirmModal.classList.add('hidden');
+    }
+});
 </script>

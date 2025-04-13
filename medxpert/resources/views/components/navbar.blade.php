@@ -32,8 +32,10 @@
                             </svg>
                         </button>
                         <div x-show="open" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50" style="display: none;">
-                            @if(Auth::user()->role == 'doctor')
+                        @if(Auth::user()->role == 'doctor')
                             <a href="{{ route('profile', ['id' => Auth::id()]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                        @elseif(Auth::user()->role == 'admin')
+                            <a href="{{ route('dash') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Admin Dashboard</a>
                         @else
                             <a href="{{ route('patientprofile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
                         @endif

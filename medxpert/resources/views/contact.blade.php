@@ -8,8 +8,7 @@
 
 
 @section('content')
-{{-- {{dd(session()->all())}} --}}
-{{dd (session('user_id')) }}
+
 
     <div class="container my-5">
         <h1 class="text-center animate__animated animate__fadeInDown">Contact Us</h1>

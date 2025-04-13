@@ -1,4 +1,13 @@
-
+@if(Auth::user()->role == 'patient' )
+    <script>
+        window.location.href = "{{ route('patientprofile') }}";
+    </script>
+@endif
+@if(Auth::user()->role == 'doctor')
+    <script>
+        window.location.href = "{{ route('profile') }}";
+    </script>
+@endif
 @extends('admindashboard.layout')
 @section('title','AdminDashboard')
 

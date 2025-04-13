@@ -7,8 +7,12 @@ use App\Models\AvailableSlot;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\admin\DoctorDetails;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorProfileController extends Controller
+// use Illuminate\Foundation\Auth\User;
+
 {
     /**
      * Display the doctor's profile page.
@@ -21,18 +25,22 @@ class DoctorProfileController extends Controller
         // Find doctor with relationships
         $doctor = Doctor::with(['user', 'doctorDetails'])
             ->findOrFail($id);
+        // Auth::user()->id == $doctor->user_id;
+        // $user = Auth::user();
+        // $doctor = $user->doctor->with(['user', 'doctorDetails'])->findOrFail($id);
+
 
         // Get available slots for the next 7 days that are not booked
         $availableSlots = AvailableSlot::where('doctor_id', $id)
             ->where('date', '>=', Carbon::today())
             ->where('date', '<=', Carbon::today()->addDays(7))
-            ->where('is_booked', false)
             ->orderBy('date')
             ->orderBy('start_time')
             ->get();
 
         return view('profile', [
             'doctor' => $doctor,
+
             'availableSlots' => $availableSlots,
         ]);
     }
@@ -80,6 +88,6 @@ class DoctorProfileController extends Controller
         $cities = DB::table('doctor_details')->select('city')->distinct()->get()->pluck('city');
 
 
-        return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments, 'specialties' => $specialties, 'cities' => $cities]);
+        return view('doctor', ['doctors' => $doctors, 'appointments' => $appointments, 'specialties' => $specialties, 'cities' => $cities,]);
     }
 }

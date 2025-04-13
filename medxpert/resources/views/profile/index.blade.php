@@ -1,7 +1,14 @@
+{{-- @if(Auth::user()->role == 'patient' )
+    <script>
+        window.location.href = "{{ route('patientprofile') }}";
+    </script>
+@endif --}}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
 @extends('layouts.app')
 
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 <!-- Font Awesome -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <style>
@@ -136,7 +143,7 @@
                             <label for="Chronc" class="col-md-3 col-form-label text-md-end">chronic_diseases<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input type="text" class="form-control @error('chronic_diseases') is-invalid @enderror" id="chronic_diseases" name="chronic_diseases" value="{{ old('chronic_diseases',$patientMedicalHistory->chronic_diseases) }}">
+                                    <input type="text" class="form-control @error('chronic_diseases') is-invalid @enderror" id="chronic_diseases" name="chronic_diseases" value="{{ old('chronic_diseases',$patientMedicalHistory->chronic_diseases ?? '') }}">
                                     @error('chronic_diseases')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -149,7 +156,7 @@
                             <label for="medications" class="col-md-3 col-form-label text-md-end">medications<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input type="text" class="form-control @error('medications') is-invalid @enderror" id="medications" name="medications" value="{{ old('medications',$patientMedicalHistory->medications) }}">
+                                    <input type="text" class="form-control @error('medications') is-invalid @enderror" id="medications" name="medications" value="{{ old('medications',$patientMedicalHistory->medications ?? '') }}">
                                     @error('medications')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -162,7 +169,7 @@
                             <label for="allergies" class="col-md-3 col-form-label text-md-end">allergies<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input type="text" class="form-control @error('allergies') is-invalid @enderror" id="allergies" name="allergies" value="{{ old('allergies',$patientMedicalHistory->allergies) }}">
+                                    <input type="text" class="form-control @error('allergies') is-invalid @enderror" id="allergies" name="allergies" value="{{ old('allergies',$patientMedicalHistory->allergies ?? '') }}">
                                     @error('allergies')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -251,9 +258,9 @@
                             <div class="d-flex flex-column align-items-center">
                                 <i class="bi bi-calendar-x text-muted" style="font-size: 2rem;"></i>
                                 <p class="mt-2 mb-0">No appointments found</p>
-                                <button class="btn btn-sm btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#newAppointmentModal">
+                                <a href="{{route('doc')}}" class="btn btn-sm btn-primary mt-3" >
                                     Schedule an Appointment
-                                </button>
+                                </a>
                             </div>
                         </td>
                     </tr>
